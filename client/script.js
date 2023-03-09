@@ -64,7 +64,39 @@ return (
      </div>
      </div>
 
-  `//  the div with class= 'message' & id= ${uiqueId} its gna be dynamic unique id will be used to render the value which is going to be the ai generated message
+  `//  the div with class= 'message' & id= ${uiqueId} (which is gna be dynamic unique id) will be used to render the value which is going to be the ai generated message.
 
 )
 }
+
+const handleSubmit = async(e) => {
+  e.preventDefault() // prevent default browser behaviour from occuring which is to reload browser when form is submitted
+  const data = new FormData(form);
+
+  //generate user's chat stripe
+  chatContainer.innerHTML += chatStripe(false,data.get('prompt'));
+
+  //finally we might want to clear the text area input
+  form.reset();
+
+  //bot's chatstripe
+  const uniqueId = generateUniqueId();
+  chatContainer.innerHTML += chatStripe(true," ",uniqueId); //the reason a string with empty space was added as the second parameter is coz its going to fill up later on upon loading (loader function on line 12)
+
+  chatContainer.scrollTop = chatContainer.scrollHeight //as the user types we want to keep scrolling down so we see the message. this will put the new message in view.
+
+  //fetch newly created div
+  const messageDiv = document.getElementById(uniqueId) //this line explains why we need to create a new id for every single messsage.
+
+  
+  // turn on loader()
+  loader(messageDiv)
+}
+
+
+form.addEventListener('submit',handleSubmit);
+form.addEventListener('keyup', (e) => {
+  if(e.keyCode === 13) {
+    handleSubmit(e);
+  }
+})
