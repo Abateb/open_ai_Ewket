@@ -88,7 +88,7 @@ const handleSubmit = async(e) => {
   //fetch newly created div
   const messageDiv = document.getElementById(uniqueId) //this line explains why we need to create a new id for every single messsage.
 
-  
+
   // turn on loader()
   loader(messageDiv)
 }
